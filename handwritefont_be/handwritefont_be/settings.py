@@ -141,7 +141,11 @@ REST_FRAMEWORK = {
 ############################################################################################################
 
 # # CORS 권한 
+# CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOW_ALL_ORIGINS = True # <- 모든 호스트 허용
+
+# CORS_ALLOW_CREDENTIALS가 True인 경우, 쿠키가 cross-site HTTP 요청에 포함될 수 있다. 기본값은 False이다.
+CORS_ALLOW_CREDENTIALS = True
 
 # or 
 CORS_ALLOWED_ORIGINS = [
@@ -149,8 +153,7 @@ CORS_ALLOWED_ORIGINS = [
 "http://127.0.0.1:3000"
 ]
 
-# CORS_ALLOW_CREDENTIALS가 True인 경우, 쿠키가 cross-site HTTP 요청에 포함될 수 있다. 기본값은 False이다.
-CORS_ALLOW_CREDENTIALS = True
+
 
 
 # 실제 요청에 허용되는 HTTP 동사 리스트이다. 기본값은 다음과 같다:
@@ -181,9 +184,9 @@ CORS_ALLOW_HEADERS = [
 
 
 MIDDLEWARE = [
+    # Default
     # CORS
     'corsheaders.middleware.CorsMiddleware', # <- 가능한 높게 위치시켜야 한다.
-    # Default
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

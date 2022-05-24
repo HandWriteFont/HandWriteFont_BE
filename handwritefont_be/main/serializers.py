@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Font
+from rest_framework.validators import UniqueValidator
 
 class FontSerializer(serializers.ModelSerializer):
     like_num = serializers.ReadOnlyField()
@@ -18,3 +19,10 @@ class FontLookAroundSerializer(serializers.ModelSerializer):
     class Meta:
         model = Font
         fields = ['like_num','name','file','like_users']
+
+class NameUniqueCheckSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=True,min_length=1, max_length=50, validators=[UniqueValidator(queryset=Font.objects.all())])
+
+    class Meta:
+        model = Font
+        fields = ['name']

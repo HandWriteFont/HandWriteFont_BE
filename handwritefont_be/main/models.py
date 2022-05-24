@@ -8,7 +8,7 @@ def status_field():
     return [('Accept','Accept'),('To Do','To Do'),('Doing','Doing'),('Done','Done'),('Canceled','Canceled')]
 
 class Font(models.Model):
-    name = models.CharField(primary_key=True, max_length=20)
+    name = models.CharField(primary_key=True, max_length=50)
     created_date = models.DateField(auto_now_add=True)
     like_users = models.ManyToManyField(HWFUser, blank=True, related_name='like')
     owner = models.ForeignKey(HWFUser, related_name='fonts', on_delete=models.CASCADE)

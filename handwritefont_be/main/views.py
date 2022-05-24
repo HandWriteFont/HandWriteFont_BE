@@ -1,12 +1,12 @@
-from rest_framework.generics import RetrieveAPIView, ListCreateAPIView
+from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import permission_classes
 
 from .models import Font
-from .serializers import FontSerializer,FontLookAroundSerializer,FontPublicSerializer
+from .serializers import FontSerializer,FontLookAroundSerializer,FontPublicSerializer, NameUniqueCheckSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
+from rest_framework import status
 
 # Create your views here.
 
@@ -19,9 +19,18 @@ class FontView(RetrieveAPIView):
     queryset = Font.objects.all()
     serializer_class = FontSerializer
 
-class FontView(RetrieveAPIView):
-    queryset = Font.objects.all()
-    serializer_class = FontPublicSerializer
+class NameUniqueCheck(CreateAPIView):
+    serializer_class = NameUniqueCheckSerializer
+
+    def post(self, request, format=None):
+        serializer = self.get_serializer(data=request.data, context={'request': request})
+
+        if serializer.is_valid():
+            return Response(data={'detail':'You can use this Name :)'}, status=status.HTTP_200_OK)
+        else:
+            detail = dict()
+            detail['detail'] = 'This Name is alreay Used :('
+            return Response(data=detail, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def fontview(request):
