@@ -2,7 +2,7 @@ from django.db import models
 from user.models import HWFUser
 
 def user_directory_path(instance, filename):
-    return 'font/{0}/{1}'.format(instance.owner.email, filename)
+    return '{0}/{1}/template/{2}'.format(instance.owner.email,instance.name,'Template.jpg')
 
 def status_field():
     return [('Accept','Accept'),('To Do','To Do'),('Doing','Doing'),('Done','Done'),('Canceled','Canceled')]
@@ -22,4 +22,4 @@ class Font(models.Model):
 
     def __str__(self):
         return self.name
-    
+
