@@ -1,0 +1,8 @@
+# dset: 
+
+# test: 
+#   data_dir: Path to the generated images.
+#   gt_dir: Path to the ground truth data (to calculate SSIM and LPIPS).
+#   gt_extension: The extension of ground truth data.
+#   keylist: The list of fonts which used to train the evaluator. You can obtain this by setting dset.train.save_list to True when running the training.
+#   charlist: The list of characters which used to train the evaluator. You can obtain this by setting dset.train.save_list to True when running the training.

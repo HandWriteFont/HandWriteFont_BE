@@ -17,6 +17,24 @@ import os
 import cv2
 import numpy as np
 
+# Model Import
+import json
+from pathlib import Path
+from PIL import Image
+import torch
+from sconf import Config
+from torchvision import transforms
+from base.dataset import read_font, render
+from base.utils import save_tensor_to_image, load_reference
+from DM.models import Generator
+from model.inference import infer_DM
+
+transform = transforms.Compose([
+    transforms.Resize((128, 128)),
+    transforms.ToTensor(),
+    transforms.Normalize([0.5], [0.5])
+])
+
 # Create your views here.
 words = ['값', '같', '곬', '곶', '깎', '넋', '늪', '닫', '닭', '닻', '됩', '뗌', '략', '몃', '밟', '볘', '뺐',
             '뽈', '솩', '쐐', '앉', '않', '얘', '얾', '엌', '옳', '읊', '죡', '쮜', '춰', '츄', '퀭', '틔', '핀', '핥', '훟']
@@ -137,7 +155,7 @@ def centering_image(img, image_size=128, verbose=False, resize_fix=False, pad_va
 def template2png(load_file, font_obj):
 
     load_path = Path(load_file)
-    save_dir = Path(str((settings.MEDIA_ROOT)) + str(Path('/{0}/{1}/ref_glyphs'.format(font_obj.owner.email,font_obj.name))))
+    save_dir = Path(str((settings.MEDIA_ROOT)) + str(Path('/{0}/{1}/ref_glyphs/{2}'.format(font_obj.owner.email,font_obj.name,font_obj.name))))
     save_dir.mkdir(parents=True, exist_ok=True)
 
     img = Image.open(load_path)
@@ -171,6 +189,46 @@ def template2png(load_file, font_obj):
             y = 611
 
         letterN = letterN + 1
+    return save_dir.parent
+
+# Inference Model
+def inference(ref_path):
+    model_path = str(settings.MODEL_ROOT)
+    weight_path = model_path + "/result/ttf_71/checkpoints/last.pth"  # path to weight to infer
+    decomposition = model_path + "/data/kor/decomposition_DM.json"
+
+    n_heads = 3
+    n_comps = 68
+    ###############################################################
+
+    # building and loading the model (not recommended to modify)
+    cfg = Config(model_path + "/cfgs/DM/default.yaml")
+    decomposition = json.load(open(decomposition))
+
+    gen = Generator(n_heads=n_heads, n_comps=n_comps).cuda().eval()
+    weight = torch.load(weight_path)
+    gen.load_state_dict(weight["generator_ema"])
+
+    ###############################################################
+    # ref_path = model_path + "/data_example/kor/jpg"
+    extension = "jpg"
+    ## Comment upper lines and uncomment lower lines to test with ttf files.
+    # extension = "ttf"
+    ref_chars = "값같곬곶깎넋늪닫닭닻됩뗌략몃밟볘뺐뽈솩쐐앉않얘얾엌옳읊죡쮜춰츄퀭틔핀핥훟"
+    ###############################################################
+    ref_dict, load_img = load_reference(ref_path, extension, ref_chars)
+
+    ###############################################################
+    gen_chars = json.load(open(model_path + "/data/kor/gen_all_chars.json"))     # characters to generate
+    # gen_chars = json.load(open(model_path + "/data/kor/gen_chars.json"))     # characters to generate
+    # gen_chars = "좋은하루되세요"  # characters to generate
+    save_dir = str(os.path.join(Path(ref_path).parent, 'gen_glyphs'))
+    batch_size = 32
+    ###############################################################
+    
+    infer_DM(gen, save_dir, gen_chars, ref_dict, load_img, decomposition, batch_size)
+
+    return save_dir
 
 @permission_classes([IsAuthenticatedOrReadOnly])
 class FontListView(ListCreateAPIView):
@@ -181,7 +239,8 @@ class FontListView(ListCreateAPIView):
         output =  self.create(request, *args, **kwargs)
         obj = Font.objects.get(name = request.data['name'])
         load_file = str((settings.BASE_DIR)) + str(Path(obj.file.url)).replace("%40","@")
-        template2png(load_file=load_file, font_obj=obj)
+        target_dir = template2png(load_file=load_file, font_obj=obj)
+        save_dir = inference(target_dir)
         return output
 
 class FontView(RetrieveAPIView):

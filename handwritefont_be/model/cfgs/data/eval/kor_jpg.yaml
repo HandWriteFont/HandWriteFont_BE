@@ -1,0 +1,10 @@
+dset:
+  test:
+    extension: jpg
+    data_dir: data_example/kor/Test
+    source_path: data/kor/source.ttf
+    source_ext: ttf
+    ref_chars: data/kor/ref_chars.json
+    gen_chars: data/kor/ref_chars.json
+    # gen_chars:
+

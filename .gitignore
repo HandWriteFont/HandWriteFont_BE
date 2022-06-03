@@ -237,10 +237,16 @@ celerybeat-schedule.db
 celerybeat-schedule.dir
 
 # Json Secret 제외
-*.json
+secrets.json
 
 ### Redis ###
 # Ignore redis binary dump (dump.rdb) files
 *.rdb
+
+### FFG ###
+
+*.pth
+result/
+data_example/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,django
