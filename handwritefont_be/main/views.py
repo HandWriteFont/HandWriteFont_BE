@@ -35,6 +35,9 @@ transform = transforms.Compose([
     transforms.Normalize([0.5], [0.5])
 ])
 
+# Png2Svg
+from .png2svg import png2svg
+
 # Create your views here.
 words = ['값', '같', '곬', '곶', '깎', '넋', '늪', '닫', '닭', '닻', '됩', '뗌', '략', '몃', '밟', '볘', '뺐',
             '뽈', '솩', '쐐', '앉', '않', '얘', '얾', '엌', '옳', '읊', '죡', '쮜', '춰', '츄', '퀭', '틔', '핀', '핥', '훟']
@@ -160,12 +163,20 @@ def template2png(load_file, font_obj):
 
     img = Image.open(load_path)
     imgGray = img.convert('L')
-    img_resize = imgGray.resize((1280, 777))
-    x,y = 66,110
+    p2a = np.array(imgGray)
+    
+    th = cv2.adaptiveThreshold(p2a,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,127,5)
+    template_cropped = tight_crop_image(th, verbose=False, resize_fix=False)
+
+    template_cropped = Image.fromarray(template_cropped)
+
+    template_cropped.save(load_path)
+    template_resize = template_cropped.resize((1270, 755))
+    x,y = 4,52
     letterN = 1
 
     while letterN <= 36:
-        croppedImage = img_resize.crop((x, y, x + 120, y + 120))
+        croppedImage = template_resize.crop((x, y, x + 130, y + 130))
         croppedImage = croppedImage.resize((128, 128))
         
         pillow2array = np.array(croppedImage)
@@ -176,17 +187,14 @@ def template2png(load_file, font_obj):
         save_path = save_dir / f"{words[letterN - 1]}.jpg" 
         output.save(save_path)
 
-        x = x + 126
+        x = x + 141
 
         if letterN == 9:
-            x = 66
-            y = 276
+            x,y = 4,241
         elif letterN == 18:
-            x = 66
-            y = 444
+            x,y = 4,427
         elif letterN == 27:
-            x = 66
-            y = 611
+            x,y = 4,616
 
         letterN = letterN + 1
     return save_dir.parent
@@ -239,8 +247,9 @@ class FontListView(ListCreateAPIView):
         output =  self.create(request, *args, **kwargs)
         obj = Font.objects.get(name = request.data['name'])
         load_file = str((settings.BASE_DIR)) + str(Path(obj.file.url)).replace("%40","@")
-        target_dir = template2png(load_file=load_file, font_obj=obj)
-        save_dir = inference(target_dir)
+        template_path = template2png(load_file=load_file, font_obj=obj)
+        # png_path = inference(template_path) '/' + obj.name
+
         return output
 
 class FontView(RetrieveAPIView):

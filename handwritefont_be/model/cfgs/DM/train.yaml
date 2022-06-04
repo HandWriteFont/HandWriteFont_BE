@@ -3,5 +3,5 @@ n_primals: 68   # Number of entire primals.
 
 trainer:
   # resume: /home/kdh/jolsul/fewshot-font-generation/result/ttf_131/last.pth
-  resume: /home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/main/model/result/ttf_71/last.pth
+  resume: /home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/model/result/ttf_71/last.pth
   work_dir: ./result/ttf_71
