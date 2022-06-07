@@ -1,5 +1,6 @@
 from django.db import models
 from user.models import HWFUser
+from django.conf import settings
 
 def user_directory_path(instance, filename):
     return '{0}/{1}/template/{2}'.format(instance.owner.email,instance.name,'Template.jpg')
@@ -13,6 +14,8 @@ class Font(models.Model):
     like_users = models.ManyToManyField(HWFUser, blank=True, related_name='like')
     owner = models.ForeignKey(HWFUser, related_name='fonts', on_delete=models.CASCADE)
     file = models.FileField(upload_to=user_directory_path,null=True,blank=True)
+    ttf_file = models.FilePathField(recursive = True, path = settings.MEDIA_ROOT)
+    woff_file = models.FilePathField(recursive = True, path = settings.MEDIA_ROOT)
     status = models.CharField(max_length=10, choices=status_field(), default='Canceled')
     public = models.BooleanField(default=True)
 

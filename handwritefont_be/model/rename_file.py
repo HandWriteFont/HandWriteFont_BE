@@ -8,7 +8,7 @@ def rename(file_list):
         os.rename(file_oldname,file_new_name)
     print("Done")
 
-path_dir = '/home/kdh/jolsul/fewshot-font-generation/data_example/kor/ttf_71/'
+path_dir = '/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/model/data_example/kor/ttf_25/'
 file_list = os.listdir(path_dir)
 
 rename(file_list)

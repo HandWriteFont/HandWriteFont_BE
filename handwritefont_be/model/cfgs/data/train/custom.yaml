@@ -1,11 +1,11 @@
 dset:   # leave blank
   train:   # leave blank
-    data_dir: data_example/kor/ttf_71
+    data_dir: data_example/kor/ttf_25
     chars: data/kor/train_chars.json
     extension: ttf
   val:
     unseen_chars:
-      data_dir: data_example/kor/ttf_71
+      data_dir: data_example/kor/ttf_25
       extension: ttf
       n_gen: 20
       n_font: 5
@@ -13,7 +13,7 @@ dset:   # leave blank
       source_path: data/kor/source.ttf
       source_ext: ttf
     seen_chars:
-      data_dir: data_example/kor/ttf_71
+      data_dir: data_example/kor/ttf_25
       extension: ttf
       n_gen: 20
       n_font: 5

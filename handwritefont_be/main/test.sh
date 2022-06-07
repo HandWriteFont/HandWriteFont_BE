@@ -1,0 +1,1 @@
+/usr/bin/fontforge svgs2ttf font.json /home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/SecondTest2/gen_glyphs/svg_glyphs /home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/SecondTest2/gen_glyphs/output SecondTest3 -display none

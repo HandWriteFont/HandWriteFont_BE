@@ -14,6 +14,7 @@ from pathlib import Path
 from django.conf import settings
 
 import os
+import subprocess
 import cv2
 import numpy as np
 
@@ -202,7 +203,7 @@ def template2png(load_file, font_obj):
 # Inference Model
 def inference(ref_path):
     model_path = str(settings.MODEL_ROOT)
-    weight_path = model_path + "/result/ttf_71/checkpoints/last.pth"  # path to weight to infer
+    weight_path = model_path + "/result/ttf_25/checkpoints/last.pth"  # path to weight to infer
     decomposition = model_path + "/data/kor/decomposition_DM.json"
 
     n_heads = 3
@@ -244,12 +245,34 @@ class FontListView(ListCreateAPIView):
     serializer_class = FontSerializer
 
     def post(self, request, *args, **kwargs):
+        # request.POST['name'].replace(" ","_")
         output =  self.create(request, *args, **kwargs)
-        obj = Font.objects.get(name = request.data['name'])
-        load_file = str((settings.BASE_DIR)) + str(Path(obj.file.url)).replace("%40","@")
-        template_path = template2png(load_file=load_file, font_obj=obj)
-        # png_path = inference(template_path) '/' + obj.name
-
+        # obj = Font.objects.get(name = request.data['name'])
+        # load_file = str((settings.BASE_DIR)) + str(Path(obj.file.url)).replace("%40","@")
+        # template_path = template2png(load_file=load_file, font_obj=obj)
+        
+        print("Inference Start")
+        # png_path = inference(template_path)
+        # png_path = os.path.join(Path(png_path), obj.name)
+        print("Inference End")
+        
+        print("Png 2 Svg Start")
+        # svg2font = png2svg(png_path)
+        print("Png 2 Svg End")
+        
+        print("Svg 2 Ttf Start")
+        # print(svg2font)
+        # print(str(os.path.join(Path(svg2font).parent, 'output')))
+        # os.system('/usr/bin/fontforge svgs2ttf font.json' + " " + str(svg2font) + " " + str(os.path.join(Path(svg2font).parent, 'output')) + " " + obj.name)
+        # svg2ttf('/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/main/font.json', '/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/SecondTest3/gen_glyphs/svg_glyphs', '/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/SecondTest3/gen_glyphs/output', 'SecondTest3')
+        # subprocess.run(['/usr/bin/fontforge','svgs2ttf','font.json', '/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/SecondTest2/gen_glyphs/svg_glyphs', '/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/SecondTest2/gen_glyphs/output', 'SecondTest3'])
+        subprocess.run(['sh','/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/main/test.sh'])
+        # subprocess.run(['/usr/bin/fontforge','svgs2ttf','font.json', str(svg2font), str(os.path.join(Path(svg2font).parent) ,'output'), obj.name])
+        print("Svg 2 Ttf End")
+        
+        # obj.ttf_file = ttf_file
+        # obj.woff_file = woff_file
+        # obj.save()
         return output
 
 class FontView(RetrieveAPIView):

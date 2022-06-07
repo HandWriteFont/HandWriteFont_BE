@@ -6,7 +6,7 @@ decomposition:
 n_primals:
 
 # Optimizer
-max_iter: 1500000
+max_iter: 1000000
 g_lr: 2e-4
 d_lr: 8e-4
 ac_lr: 2e-4
