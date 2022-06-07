@@ -6,9 +6,9 @@
     , "lang": "English (US)"
     , "family": "Example"
     , "style": "Regular"
-    , "familyname": "Example"
-    , "fontname": "Example-Regular"
-    , "fullname": "Example Regular"
+    , "familyname": "MyFont"
+    , "fontname": "MyFont-Regular"
+    , "fullname": "MyFont"
     }
   , "glyphs":
   {
@@ -44703,12 +44703,12 @@
   }
   , "sfnt_names":
   [ ["English (US)", "Copyright", "Copyright (c) 2014 by Nobody"]
-  , ["English (US)", "Family", "Example"]
+  , ["English (US)", "Family", "MyFont"]
   , ["English (US)", "SubFamily", "Regular"]
-  , ["English (US)", "UniqueID", "Example 2014-12-04"]
-  , ["English (US)", "Fullname", "Example Regular"]
+  , ["English (US)", "UniqueID", "MyFont 2014-12-04"]
+  , ["English (US)", "Fullname", "MyFont Regular"]
   , ["English (US)", "Version", "Version 001.000"]
-  , ["English (US)", "PostScriptName", "Example-Regular"]
+  , ["English (US)", "PostScriptName", "MyFont-Regular"]
   ]
 , "input": "."
 , "output": [ "example.ttf", "example.svg", "example.woff" ]

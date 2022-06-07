@@ -30,6 +30,7 @@ from base.utils import save_tensor_to_image, load_reference
 from DM.models import Generator
 from model.inference import infer_DM
 
+
 transform = transforms.Compose([
     transforms.Resize((128, 128)),
     transforms.ToTensor(),
@@ -245,29 +246,29 @@ class FontListView(ListCreateAPIView):
     serializer_class = FontSerializer
 
     def post(self, request, *args, **kwargs):
-        # request.POST['name'].replace(" ","_")
+        request.data['name'] = request.data['name'].replace(" ","_")
         output =  self.create(request, *args, **kwargs)
-        # obj = Font.objects.get(name = request.data['name'])
-        # load_file = str((settings.BASE_DIR)) + str(Path(obj.file.url)).replace("%40","@")
-        # template_path = template2png(load_file=load_file, font_obj=obj)
+        obj = Font.objects.get(name = request.data['name'])
+        load_file = str((settings.BASE_DIR)) + str(Path(obj.file.url)).replace("%40","@")
+        template_path = template2png(load_file=load_file, font_obj=obj)
         
         print("Inference Start")
-        # png_path = inference(template_path)
-        # png_path = os.path.join(Path(png_path), obj.name)
+        png_path = inference(template_path)
+        png_path = os.path.join(Path(png_path), obj.name)
         print("Inference End")
         
         print("Png 2 Svg Start")
-        # svg2font = png2svg(png_path)
+        svg2font = png2svg(png_path)
         print("Png 2 Svg End")
         
         print("Svg 2 Ttf Start")
         # print(svg2font)
         # print(str(os.path.join(Path(svg2font).parent, 'output')))
         # os.system('/usr/bin/fontforge svgs2ttf font.json' + " " + str(svg2font) + " " + str(os.path.join(Path(svg2font).parent, 'output')) + " " + obj.name)
-        # svg2ttf('/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/main/font.json', '/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/SecondTest3/gen_glyphs/svg_glyphs', '/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/SecondTest3/gen_glyphs/output', 'SecondTest3')
-        # subprocess.run(['/usr/bin/fontforge','svgs2ttf','font.json', '/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/SecondTest2/gen_glyphs/svg_glyphs', '/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/SecondTest2/gen_glyphs/output', 'SecondTest3'])
-        subprocess.run(['sh','/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/main/test.sh'])
-        # subprocess.run(['/usr/bin/fontforge','svgs2ttf','font.json', str(svg2font), str(os.path.join(Path(svg2font).parent) ,'output'), obj.name])
+        # svg2ttf('font.json', svgs2font, str(os.path.join(Path(svg2font).parent, 'output')), obj.name)
+        subprocess.run(['/usr/bin/fontforge','-script','/home/dice/HandWriteFont_BE/handwritefont_be/main/svgs2ttf','/home/dice/HandWriteFont_BE/handwritefont_be/main/font.json',svg2font,str(os.path.join(Path(svg2font).parent.parent, 'fonts')), obj.name ])
+        # subprocess.run(['sh','/home/kdh/jolsul/HandWriteFont_BE/handwritefont_be/main/test.sh'])
+        # subprocess.run(['/usr/bin/fontforge','-script','/home/dice/HandWriteFont_BE/handwritefont_be/main/svgs2ttf','/home/dice/HandWriteFont_BE/handwritefont_be/main/font.json', '/home/dice/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/Test7/gen_glyphs/svg_glyphs','/home/dice/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/Test7/gen_glyphs/output', 'success'])
         print("Svg 2 Ttf End")
         
         # obj.ttf_file = ttf_file
