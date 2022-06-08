@@ -1,9 +1,16 @@
 from rest_framework import serializers
-from .models import Font
+from .models import Font, preview
 from rest_framework.validators import UniqueValidator
+
+class PreviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = preview
+        fields = '__all__'
+
 
 class FontSerializer(serializers.ModelSerializer):
     like_num = serializers.ReadOnlyField()
+    previews = PreviewSerializer(many=True, read_only =True)
     class Meta:
         model = Font
         fields = '__all__'

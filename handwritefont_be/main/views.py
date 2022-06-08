@@ -2,7 +2,7 @@ from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, CreateAP
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import permission_classes
 
-from .models import Font
+from .models import Font, preview
 from .serializers import FontSerializer,FontLookAroundSerializer,FontPublicSerializer, NameUniqueCheckSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -271,9 +271,12 @@ class FontListView(ListCreateAPIView):
         # subprocess.run(['/usr/bin/fontforge','-script','/home/dice/HandWriteFont_BE/handwritefont_be/main/svgs2ttf','/home/dice/HandWriteFont_BE/handwritefont_be/main/font.json', '/home/dice/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/Test7/gen_glyphs/svg_glyphs','/home/dice/HandWriteFont_BE/handwritefont_be/media/admin@admin.com/Test7/gen_glyphs/output', 'success'])
         print("Svg 2 Ttf End")
         
-        # obj.ttf_file = ttf_file
-        # obj.woff_file = woff_file
-        # obj.save()
+        obj.ttf_file = str(os.path.join(Path(svg2font).parent.parent, 'fonts')).replace('/home/dice/HandWriteFont_BE/handwritefont_be/','http://218.150.183.52:8000/') +"/"+obj.name + '.ttf'
+        obj.woff_file = str(os.path.join(Path(svg2font).parent.parent, 'fonts')).replace('/home/dice/HandWriteFont_BE/handwritefont_be/','http://218.150.183.52:8000/') +"/"+obj.name + '.woff'
+        for ch in "안녕하세요당신의폰트입니다":
+            target = preview.objects.create(name=ch, path = str(Path(svg2font)).replace('/home/dice/HandWriteFont_BE/handwritefont_be/','http://218.150.183.52:8000/')+"/"+ch+".svg")
+            obj.previews.add(target)
+        obj.save()
         return output
 
 class FontView(RetrieveAPIView):
