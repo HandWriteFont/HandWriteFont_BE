@@ -1,4 +1,4 @@
-from rest_framework.generics import RetrieveAPIView, ListCreateAPIView, CreateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView,RetrieveAPIView, ListCreateAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import permission_classes
 
@@ -235,14 +235,14 @@ def inference(ref_path):
     save_dir = str(os.path.join(Path(ref_path).parent, 'gen_glyphs'))
     batch_size = 32
     ###############################################################
-    
+     
     infer_DM(gen, save_dir, gen_chars, ref_dict, load_img, decomposition, batch_size)
 
     return save_dir
 
 @permission_classes([IsAuthenticatedOrReadOnly])
 class FontListView(ListCreateAPIView):
-    queryset = Font.objects.all().order_by('-created_date')
+    queryset = Font.objects.all().order_by('-created_date').exclude(ttf_file="", public=False)
     serializer_class = FontSerializer
 
     def post(self, request, *args, **kwargs):
@@ -279,7 +279,7 @@ class FontListView(ListCreateAPIView):
         obj.save()
         return output
 
-class FontView(RetrieveAPIView):
+class FontView(RetrieveUpdateAPIView):
     queryset = Font.objects.all()
     serializer_class = FontSerializer
 
@@ -294,11 +294,11 @@ class NameUniqueCheck(CreateAPIView):
         else:
             detail = dict()
             detail['detail'] = 'This Name is alreay Used :('
-            return Response(data=detail, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data=detail, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def fontview(request):
-    queryset = Font.objects.filter(public=True)
+    queryset = Font.objects.filter(public=True).exclude(ttf_file="")
     name = request.query_params.get('name')
     if name is not None:
         queryset = queryset.get(name=name, public=True)
