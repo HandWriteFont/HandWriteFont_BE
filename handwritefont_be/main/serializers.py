@@ -16,6 +16,7 @@ class FontSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class FontPublicSerializer(serializers.ModelSerializer):
+    previews = PreviewSerializer(many=True, read_only =True)
     class Meta:
         model = Font
         read_only_fields = ('name', 'file')
@@ -23,6 +24,7 @@ class FontPublicSerializer(serializers.ModelSerializer):
 
 class FontLookAroundSerializer(serializers.ModelSerializer):
     like_num = serializers.ReadOnlyField()
+    previews = PreviewSerializer(many=True, read_only =True)
     class Meta:
         model = Font
         fields = ['like_num','name','file','like_users']
