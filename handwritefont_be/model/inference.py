@@ -124,13 +124,13 @@ def infer_DM(gen, save_dir, gen_chars, key_ref_dict, load_img, decomposition, ba
             out = gen.read_decode(fid, dec, reset_memory=False)[0].detach().cpu()
             if return_img:
                 outs.setdefault(key, []).append(out)
-
+            del dec
             path = save_dir / key / f"{char}.png"
             save_tensor_to_image(out, path)
 
             # path = save_dir / key / 'SVG' / f"{char}.svg"
             # save_tensor_to_svg(out,path)
-
+    torch.cuda.empty_cache()
     return outs
 
 
