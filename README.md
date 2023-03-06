@@ -40,7 +40,7 @@ AI : `AI 모델 선정`, `데이터 셋 수집/정제`, 모델 학습, `모델 �
 Infra : 프로토 타입으로 제작된 프로젝트였기에 배포를 위한 프로젝트의 `Dockerization`을 모두 진행하였고 전시를 위한 모든 과정을 개발하였습니다.
 
 # 전시회
-![145ABF1E-6D50-49E2-90BD-37B7CCF1563F_1_105_c.jpeg](doc/Expo.jpeg){: width="300" height="300"){: .center}
+![145ABF1E-6D50-49E2-90BD-37B7CCF1563F_1_105_c.jpeg](doc/Expo.jpeg)
 
 # Detail
 
