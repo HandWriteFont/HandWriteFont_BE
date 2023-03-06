@@ -4,7 +4,9 @@
 ## 2022 산학협력 EXPO LINC+ 캡스톤 디자인 경진대회 - 교육부 장관상 수상
 
 URL: https://uicexpo.org/bbs/capston.php?bo_id=auction15
+
 업무포지션: ML, BACKEND
+
 투입기간: 2022/02/01 → 2022/06/01
 
 ![슬라이드1.jpeg](doc/Title.jpeg)
@@ -29,10 +31,6 @@ URL: https://uicexpo.org/bbs/capston.php?bo_id=auction15
 
 ![슬라이드12.jpeg](doc/Result.jpeg)
 
-# Video
-
-[손글씨기반폰트생성플랫폼_시연.mp4](doc/손글씨기반폰트생성플랫폼_시연.mp4)
-
 # My Position
 
 Server : `Django RESTful Framework` 를 사용하여 백 엔드 개발을 진행하였으며 `API 명세서 작성, DB 설계` 등의 백 엔드에 필요한 모든 과정을 개발하였습니다.
@@ -42,10 +40,7 @@ AI : `AI 모델 선정`, `데이터 셋 수집/정제`, 모델 학습, `모델 �
 Infra : 프로토 타입으로 제작된 프로젝트였기에 배포를 위한 프로젝트의 `Dockerization`을 모두 진행하였고 전시를 위한 모든 과정을 개발하였습니다.
 
 # 전시회
-
-![145ABF1E-6D50-49E2-90BD-37B7CCF1563F_1_105_c.jpeg](doc/Expo.jpeg)
-
-![Untitled](doc/Expo2.jpeg)
+![145ABF1E-6D50-49E2-90BD-37B7CCF1563F_1_105_c.jpeg](doc/Expo.jpeg){: width="300" height="300"){: .center}
 
 # Detail
 
